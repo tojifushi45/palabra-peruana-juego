@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tradiciones del Perú - La Palabra Cultural</title>
+    <style>
+        :root {
+            --peru-red: #C8102E;
+            --peru-dark-red: #8B0000;
+            --peru-gold: #D4AF37;
+            --peru-gold-light: #F5E0A3;
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --text-color: #2D3748;
+            --correct: #2E7D32;
+            --present: #D4AF37;
+            --absent: #757575;
+            --key-bg: #E2E8F0;
+            --tile-border: #CBD5E0;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 20px;
+        }
+
+        /* HEADER */
+        header {
+            width: 100%;
+            background: linear-gradient(135deg, var(--peru-dark-red), var(--peru-red));
+            color: white;
+            padding: 12px 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border-bottom: 4px solid var(--peru-gold);
+            position: relative;
+        }
+
+        .header-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .header-controls {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .btn-icon:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* NAV MODOS */
+        nav {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 15px 10px 5px 10px;
+            flex-wrap: wrap;
+        }
+
+        .mode-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--peru-red);
+            color: var(--peru-red);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-btn.active, .mode-btn:hover {
+            background: var(--peru-red);
+            color: white;
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            width: 90%;
+            max-width: 500px;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 12px;
+            margin: 10px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid #E2E8F0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-val {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--peru-dark-red);
+        }
+
+        .stat-lbl {
+            font-size: 0.75rem;
+            color: #718096;
+        }
+
+        /* MAIN CONTAINER */
+        main {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 10px;
+            flex-grow: 1;
+        }
+
+        /* EXTRA BUTTONS */
+        .extra-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .btn-action {
+            background: var(--peru-gold);
+            color: #333;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.1s;
+        }
+
+        .btn-action:active {
+            transform: scale(0.95);
+        }
+
+        /* PISTA BOX */
+        .clue-box {
+            width: 100%;
+            background: #FFF5F5;
+            border-left: 4px solid var(--peru-red);
+            padding: 10px 14px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #4A5568;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* GAME BOARDS */
+        .board-container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .row {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .tile {
+            width: 46px;
+            height: 46px;
+            border: 2px solid var(--tile-border);
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            background: var(--card-bg);
+            transition: transform 0.15s, background-color 0.4s, border-color 0.4s;
+        }
+
+        .tile.pop {
+            transform: scale(1.1);
+            border-color: #A0AEC0;
+        }
+
+        .tile.correct {
+            background-color: var(--correct) !important;
+            color: white;
+            border-color: var(--correct) !important;
+        }
+
+        .tile.present {
+            background-color: var(--present) !important;
+            color: white;
+            border-color: var(--present) !important;
+        }
+
+        .tile.absent {
+            background-color: var(--absent) !important;
+            color: white;
+            border-color: var(--absent) !important;
+        }
+
+        .tile.flip {
+            animation: flip 0.5s ease forwards;
+        }
+
+        @keyframes flip {
+            0% { transform: rotateX(0deg); }
+            50% { transform: rotateX(90deg); }
+            100% { transform: rotateX(0deg); }
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translateX(-2px); }
+            20%, 80% { transform: translateX(4px); }
+            30%, 50%, 70% { transform: translateX(-6px); }
+            40%, 60% { transform: translateX(6px); }
+        }
+
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        /* KEYBOARD */
+        .keyboard {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            margin-top: auto;
+        }
+
+        .kbd-row {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .key {
+            background-color: var(--key-bg);
+            border: none;
+            border-radius: 6px;
+            height: 48px;
+            padding: 0 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            max-width: 42px;
+            color: #2D3748;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+
+        .key.wide {
+            max-width: 65px;
+            font-size: 0.75rem;
+        }
+
+        .key:active {
+            transform: scale(0.92);
+        }
+
+        .key.correct { background-color: var(--correct); color: white; }
+        .key.present { background-color: var(--present); color: white; }
+        .key.absent { background-color: var(--absent); color: white; opacity: 0.6; }
+
+        /* MODAL */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 15px;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            max-width: 420px;
+            width: 100%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            border-top: 6px solid var(--peru-red);
+            text-align: center;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+
+        .modal h2 {
+            color: var(--peru-dark-red);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .card-info {
+            background: #FFFBF0;
+            border: 1px solid var(--peru-gold-light);
+            border-radius: 10px;
+            padding: 12px;
+            margin: 12px 0;
+            text-align: left;
+            font-size: 0.88rem;
+            line-height: 1.4;
+        }
+
+        .card-info strong {
+            color: var(--peru-dark-red);
+        }
+
+        .modal-btn {
+            background: var(--peru-red);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+
+        .modal-btn:hover {
+            background: var(--peru-dark-red);
+        }
+
+        /* ACHIEVEMENTS GRID */
+        .achievements-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 250px;
+            overflow-y: auto;
+            margin: 10px 0;
+            padding-right: 5px;
+        }
+
+        .achievement-card {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: #F7FAFC;
+            border-radius: 8px;
+            border: 1px solid #E2E8F0;
+            text-align: left;
+        }
+
+        .achievement-card.unlocked {
+            background: #F0FFF4;
+            border-color: #C6F6D5;
+        }
+
+        .achievement-icon { font-size: 1.5rem; }
+        .achievement-title { font-weight: bold; font-size: 0.85rem; }
+        .achievement-desc { font-size: 0.75rem; color: #718096; }
+
+        @media (max-width: 380px) {
+            .tile { width: 38px; height: 38px; font-size: 1.1rem; }
+            .key { height: 42px; font-size: 0.8rem; }
+            .header-title { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-title">🇵🇪 PALABRA DEL PERÚ</div>
+        <div class="header-controls">
+            <button class="btn-icon" id="btnSound">🔊</button>
+            <button class="btn-icon" id="btnStats">🏆</button>
+        </div>
+    </header>
+
+    <nav>
+        <button class="mode-btn active" data-mode="1">Tradición del Día</button>
+        <button class="mode-btn" data-mode="2">Completa la Palabra</button>
+        <button class="mode-btn" data-mode="3">Adivina por Pista</button>
+    </nav>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-val" id="scoreVal">0</div>
+            <div class="stat-lbl">Puntos</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val" id="streakVal">0 🔥</div>
+            <div class="stat-lbl">Racha</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-val" id="recordVal">0</div>
+            <div class="stat-lbl">Récord</div>
+        </div>
+    </div>
+
+    <main>
+        <div class="extra-bar">
+            <button class="btn-action" id="btnFact">💡 Dato Cultural</button>
+        </div>
+
+        <div class="clue-box" id="clueBox">Cargando modo de juego...</div>
+
+        <div class="board-container" id="board"></div>
+
+        <div class="keyboard" id="keyboard">
+            <div class="kbd-row">
+                <button class="key" data-key="Q">Q</button><button class="key" data-key="W">W</button><button class="key" data-key="E">E</button><button class="key" data-key="R">R</button><button class="key" data-key="T">T</button><button class="key" data-key="Y">Y</button><button class="key" data-key="U">U</button><button class="key" data-key="I">I</button><button class="key" data-key="O">O</button><button class="key" data-key="P">P</button>
+            </div>
+            <div class="kbd-row">
+                <button class="key" data-key="A">A</button><button class="key" data-key="S">S</button><button class="key" data-key="D">D</button><button class="key" data-key="F">F</button><button class="key" data-key="G">G</button><button class="key" data-key="H">H</button><button class="key" data-key="J">J</button><button class="key" data-key="K">K</button><button class="key" data-key="L">L</button><button class="key" data-key="Ñ">Ñ</button>
+            </div>
+            <div class="kbd-row">
+                <button class="key wide" data-key="ENTER">ENTER</button>
+                <button class="key" data-key="Z">Z</button><button class="key" data-key="X">X</button><button class="key" data-key="C">C</button><button class="key" data-key="V">V</button><button class="key" data-key="B">B</button><button class="key" data-key="N">N</button><button class="key" data-key="M">M</button>
+                <button class="key wide" data-key="BACKSPACE">⌫</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- MODAL GENERAL -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+        // BANCO DE PALABRAS CULTURALES DEL PERÚ (100 Palabras)
+        const WORD_BANK = [
+            { word: "MARINERA", region: "Costa", cat: "Danza", meaning: "Danza elegante de cortejo en parejas con pañuelos blancos.", fact: "Es considerada la danza nacional del Perú y tiene un famoso festival anual en Trujillo." },
+            { word: "HUAYNO", region: "Sierra", cat: "Danza", meaning: "Danza y género musical andino de ritmo alegre y zapateo.", fact: "Es la expresión musical más difundida y representativa de los Andes peruanos." },
+            { word: "INTIRAYMI", region: "Sierra", cat: "Fiesta", meaning: "Fiesta del Sol celebrada cada solsticio de invierno en Cusco.", fact: "Fue la festividad religiosa más importante del Imperio Inca." },
+            { word: "PACHAMANCA", region: "Sierra", cat: "Gastronomía", meaning: "Comida ancestral cocinada bajo tierra con piedras calientes.", fact: "Fue declarada Patrimonio Cultural de la Nación en el año 2003." },
+            { word: "RETABLO", region: "Sierra", cat: "Artesanía", meaning: "Caja de madera con figuras policromadas que representan escenas andinas.", fact: "Originarios de Ayacucho, derivados de las antiguas cajas de San Marcos." },
+            { word: "CAJON", region: "Costa", cat: "Instrumento", meaning: "Instrumento de percusión de madera de origen afroperuano.", fact: "Fue reconocido mundialmente cuando Paco de Lucía lo incorporó al flamenco." },
+            { word: "YUNZA", region: "Nacional", cat: "Fiesta", meaning: "Árbol cargado de regalos que se derriba bailando en carnavales.", fact: "En la selva peruana se le conoce popularmente como 'Humisha'." },
+            { word: "CHICHA", region: "Nacional", cat: "Gastronomía", meaning: "Bebida tradicional a base de maíz fermentado o morado.", fact: "La chicha de jora era considerada la bebida sagrada de los Incas." },
+            { word: "TONDERO", region: "Costa", cat: "Danza", meaning: "Danza tradicional piurana que expresa el galanteo del campo.", fact: "Tiene influencias españolas, gitanas y afroperuanas." },
+            { word: "CEVICHE", region: "Costa", cat: "Gastronomía", meaning: "Plato de pescado fresco marinado en jugo de limón y ají.", fact: "Declarado Patrimonio Cultural Inmaterial de la Humanidad por la UNESCO." },
+            { word: "PISCO", region: "Costa", cat: "Gastronomía", meaning: "Destilado de uva peruano con denominación de origen.", "fact": "Proviene del valle y puerto colonial de Pisco en Ica." },
+            { word: "DIABLADA", region: "Sierra", cat: "Danza", meaning: "Danza de máscaras espectaculares que representa la lucha del bien y el mal.", fact: "Emblemática de la Festividad de la Virgen de la Candelaria en Puno." },
+            { word: "TIJERAS", region: "Sierra", cat: "Danza", meaning: "Danza ritual donde los bailarines ejecutan acrobacias con tijeras de metal.", fact: "Sus danzantes son llamados 'Danfaq' y hacen pactos rituales con los Apus." },
+            { word: "CHONGUINADA", region: "Sierra", cat: "Danza", meaning: "Bailes elegantes que satirizan los bailes de salón coloniales.", fact: "Muy popular en las festividades de Mayo en Junín y Pasco." },
+            { word: "FESTEJO", region: "Costa", cat: "Danza", meaning: "Ritmo alegre y contagioso representante del folclore afroperuano.", fact: "Se acompaña rítmicamente con el cajón, la quijada de burro y la cajita." },
+            { word: "ALCATRAZ", region: "Costa", cat: "Danza", meaning: "Danza erótico-festiva donde se intenta encender un cono de papel con una vela.", fact: "Destaca por la agilidad de los bailarines al esquivar la llama." },
+            { word: "SICURI", region: "Sierra", cat: "Instrumento", meaning: "Música colectiva ejecutada con zampoñas dobles conocidas como sikus.", fact: "Representa el espíritu comunitario y la reciprocidad andina." },
+            { word: "ZAMPONA", region: "Sierra", cat: "Instrumento", meaning: "Instrumento de viento compuesto por cañas de diferentes longitudes.", fact: "Existen tamaños gigantes como el 'Toyo' que miden más de un metro." },
+            { word: "CHARANGO", region: "Sierra", cat: "Instrumento", meaning: "Pequeño instrumento de cuerda alta afinación típico de los Andes.", fact: "Antiguamente su caja de resonancia se elaboraba con caparazón de armadillo." },
+            { word: "PUTUTO", region: "Sierra", cat: "Instrumento", meaning: "Caracol marino gigante usado como bocina ritual y de comunicación.", fact: "Los chasquis lo utilizaban para anunciar su llegada por el Qhapaq Ñan." },
+            { word: "QUENA", region: "Sierra", cat: "Instrumento", meaning: "Flauta de bisel hecha tradicionalmente de caña o madera.", fact: "Es uno de los instrumentos de viento más antiguos de América Precolombina." },
+            { word: "CAUSA", region: "Costa", cat: "Gastronomía", meaning: "Entrada fría a base de papa amarilla prensada con ají y limón.", fact: "Su nombre proviene del quechua 'Kawsay', que significa 'alimento o vida'." },
+            { word: "ROCOTO", region: "Sierra", cat: "Gastronomía", meaning: "Fruto picante emblemático de la cocina arequipeña.", fact: "Se utiliza como base para el famoso 'Rocoto Relleno'." },
+            { word: "OCOPA", region: "Sierra", cat: "Gastronomía", meaning: "Salsa cremosa de huacatay, queso, maní y ají servida con papas.", fact: "Es la entrada más icónica de la gastronomía de Arequipa." },
+            { word: "CARAPULCRA", region: "Costa", cat: "Gastronomía", meaning: "Guiso ancestral a base de papa seca deshidratada y carnes.", fact: "Es uno de los guisos más antiguos que se registran en el Perú." },
+            { word: "SUSPIRO", region: "Costa", cat: "Gastronomía", meaning: "Postre tradicional limeño de manjarblanco y merengue al oporto.", fact: "El poeta José Gálvez le dio el nombre de 'Suspiro a la Limeña'." },
+            { word: "TURRON", region: "Costa", cat: "Gastronomía", meaning: "Dulce de capas de harina bañadas en miel de frutas y golosinas.", fact: "Asociado a la festividad del Señor de los Milagros y a Josefa Marmanillo." },
+            { word: "PICARONES", region: "Costa", cat: "Gastronomía", meaning: "Anillos fritos de masa de zapallo y camote bañados en miel de chancaca.", fact: "Surgió en la época colonial como adaptación de los buñuelos españoles." },
+            { word: "MAZAMORRA", region: "Costa", cat: "Gastronomía", meaning: "Postre espeso de maíz morado, frutas secas y canela.", fact: "Se consume tradicionalmente junto con el arroz con leche (el 'combinado')." },
+            { word: "CHULLO", region: "Sierra", cat: "Artesanía", meaning: "Gorro de lana tejido con orejeras típico de la región andina.", fact: "Los colores y patrones pueden indicar el estado civil o la comunidad de origen." },
+            { word: "PONCHO", region: "Sierra", cat: "Artesanía", meaning: "Prenda de abrigo tejida que cubre el torso con una abertura central.", fact: "Cada región andina posee iconografías únicas tejidas en sus ponchos." },
+            { word: "TORITO", region: "Sierra", cat: "Artesanía", meaning: "Figura de cerámica colocada en los techos como amuleto de protección.", fact: "El 'Torito de Pucará' es representativo de la provincia de Lampa en Puno." },
+            { word: "ALPACA", region: "Sierra", cat: "Costumbre", meaning: "Camélido domesticado valorado por su fina y suave fibra textil.", fact: "El Perú concentra más del 80% de la población mundial de alpacas." },
+            { word: "VICUNA", region: "Sierra", cat: "Costumbre", meaning: "Camélido silvestre peruano que posee la fibra textil más fina del mundo.", fact: "Aparece en el Escudo Nacional simbolizando la riqueza del reino animal." },
+            { word: "MACHUPICCHU", region: "Sierra", cat: "Lugares", meaning: "Santuario e ícono arqueológico incaico en las montañas de Cusco.", fact: "Es una de las Nuevas 7 Maravillas del Mundo Moderno." },
+            { word: "KUELAP", region: "Selva", cat: "Lugares", meaning: "Monumental fortaleza de piedra erigida por la cultura Chachapoyas.", "fact": "Se ubica a más de 3,000 msnm en la ceja de selva de Amazonas." },
+            { word: "CHANCHAN", region: "Costa", cat: "Lugares", meaning: "La ciudad de barro más grande de la América precolombina.", fact: "Fue la próspera capital del Reino Chimú, cerca de Trujillo." },
+            { word: "CARAL", region: "Costa", cat: "Lugares", meaning: "La ciudadela y civilización más antigua de todo el continente americano.", fact: "Tiene una antigüedad contemporánea con las pirámides de Egipto." },
+            { word: "NAZCA", region: "Costa", cat: "Lugares", meaning: "Famosos geoglifos gigantes trazados en las pampas del desierto.", fact: "Representan animales y figuras visibles en su totalidad desde el aire." },
+            { word: "PARACAS", region: "Costa", cat: "Lugares", meaning: "Cultura famosa por sus finísimos mantos textiles y deformaciones craneanas.", fact: "Destaca también por la Reserva Nacional de Paracas en Ica." },
+            { word: "CHAVIN", region: "Sierra", cat: "Lugares", meaning: "Cultura matriz andina conocida por su templo y el Lanzón Monolítico.", fact: "Ubicada en Ancash, influyó en toda la religión andina temprana." },
+            { word: "MOCHE", region: "Costa", cat: "Lugares", meaning: "Cultura norteña famosa por sus huacos retratos y orfebrería de oro.", fact: "En su territorio se descubrió la tumba del Señor de Sipán." },
+            { word: "QUECHUA", region: "Nacional", cat: "Lengua", meaning: "Lengua originaria ancestral hablada por millones de peruanos.", fact: "Fue el idioma oficial del Imperio del Tahuantinsuyo." },
+            { word: "AIMARA", region: "Sierra", cat: "Lengua", meaning: "Lengua originaria hablada predominantemente en la cuenca del Lago Titicaca.", fact: "Es una lengua cooficial del Perú junto con el español y el quechua." },
+            { word: "ASHANINKA", region: "Selva", cat: "Lengua", meaning: "Pueblo e idioma indígena más numeroso de la Amazonía peruana.", fact: "Habitan históricamente en los valles de Junín, Pasco y Ucayali." },
+            { word: "SHIPIBO", region: "Selva", cat: "Artesanía", meaning: "Pueblo amazónico reconocido mundialmente por su arte geométrico 'Kené'.", fact: "Los patrones del Kené representan cantos curativos (Icaros)." },
+            { word: "WITITI", region: "Sierra", cat: "Danza", meaning: "Danza amorosa del Valle del Colca caracterizada por el traje colorido.", fact: "Los varones usan faldas femeninas como estrategia militar prehispánica." },
+            { word: "JUANE", region: "Selva", cat: "Gastronomía", meaning: "Plato de arroz, gallina y condimentos envuelto en hojas de bijao.", fact: "Es el plato estrella durante la celebración de la Fiesta de San Juan." },
+            { word: "INCHICAPI", region: "Selva", cat: "Gastronomía", meaning: "Sopa amazónica a base de gallina, maní molido, maíz y yuca.", fact: "Se sirve caliente en todas las fiestas familiares de la selva." },
+            { word: "CECINA", region: "Selva", cat: "Gastronomía", meaning: "Carne de cerdo ahumada y curada típica de la selva peruana.", fact: "Se sirve tradicionalmente acompañada de un par de bolas de tacacho." },
+            { word: "TACACHO", region: "Selva", cat: "Gastronomía", meaning: "Masa de plátano verde machacado con manteca y chicharrón.", fact: "Es el acompañamiento inseparable de la cecina amazónica." },
+            { word: "BOLOGNESI", region: "Nacional", cat: "Personaje", meaning: "Héroe militar que pronunció la inmortal frase 'Tengo deberes sagrados'.", fact: "Héroe de la Batalla de Arica durante la Guerra del Pacífico." },
+            { word: "GRAU", region: "Nacional", cat: "Personaje", meaning: "El 'Caballero de los Mares', máximo héroe naval del Perú.", fact: "Comandó el monitor Huáscar con caballerosidad y valentía extraordinaria." },
+            { word: "TUPAC", region: "Sierra", cat: "Personaje", meaning: "Túpac Amaru II, líder de la mayor rebelión anticolonial indígena de 1780.", fact: "Nació en Tinta, Cusco, y marcó la gesta emancipadora." },
+            { word: "CHABUCA", region: "Costa", cat: "Personaje", meaning: "Chabuca Granda, genial cantautora de 'La Flor de la Canela'.", fact: "Revolucionó la música criolla y afropuerto-peruana del siglo XX." },
+            { word: "VALLEJO", region: "Nacional", cat: "Personaje", meaning: "César Vallejo, uno de los poetas más innovadores de la literatura universal.", fact: "Nació en Santiago de Chuco y escribió obras cumbre como 'Trilce'." },
+            { word: "ARGUEDAS", region: "Sierra", cat: "Personaje", meaning: "José María Arguedas, escritor e indigenista autor de 'Los Ríos Profundos'.", fact: "Unió el mundo quechua y mestizo mediante su notable literatura." },
+            { word: "LOMO", region: "Nacional", cat: "Gastronomía", meaning: "El Lomo Saltado, plato fusión de la cocina peruana y cantonesa.", fact: "Preparado al sartén wok con cebolla, tomate, ají y papas fritas." },
+            { word: "CHUSPA", region: "Sierra", cat: "Artesanía", meaning: "Bolsa tejida a mano para llevar hojas de coca y amuletos.", fact: "Pieza textil fundamental en las ceremonias rituales andinas." },
+            { word: "SHACSHAS", region: "Sierra", cat: "Danza", meaning: "Danza de Ancash donde llevan semillas 'shacshas' en los tobillos.", fact: "El sonido de las semillas marca el ritmo sónico del baile." },
+            { word: "SANTIAGO", region: "Sierra", cat: "Fiesta", meaning: "Fiesta ganadera andina con marcación y adorno de animales.", fact: "Celebrada con gran entusiasmo en todo el Valle del Mantaro." },
+            { word: "CAPORALES", region: "Sierra", cat: "Danza", meaning: "Danza ágil de saltos espectaculares y cascabeles en las botas.", "fact": "Es infaltable en las festividades del altiplano puneño." },
+            { word: "MORENADA", region: "Sierra", cat: "Danza", meaning: "Danza con máscaras pesadas que evoca la presencia africana en los Andes.", fact: "Destaca por la majestuosidad y riqueza de sus disfraces." },
+            { word: "MISTI", region: "Sierra", cat: "Lugares", meaning: "Imponente volcán tutelar guardián de la ciudad de Arequipa.", fact: "Alcanza los 5,822 metros sobre el nivel del mar." },
+            { word: "HUASCARAN", region: "Sierra", cat: "Lugares", meaning: "La montaña más alta de todo el territorio peruano (6,768 m).", fact: "Ubicada en el corazón de la Cordillera Blanca en Ancash." },
+            { word: "TITICACA", region: "Sierra", cat: "Lugares", meaning: "El lago navegable más alto del mundo entero.", fact: "Cuna mítica del Imperio Inca según la leyenda de Manco Cápac." },
+            { word: "PACAYA", region: "Selva", cat: "Lugares", meaning: "Reserva Nacional Pacaya Samiria, paraíso de biodiversidad.", fact: "Conocida como la 'Selva de los Espejos' por sus aguas oscuras." },
+            { word: "CUSCO", region: "Sierra", cat: "Lugares", meaning: "La capital histórica del Perú y del Imperio Tahuantinsuyo.", fact: "Su centro histórico contiene imponentes cimientos incas." },
+            { word: "AREQUIPA", region: "Sierra", cat: "Lugares", meaning: "La 'Ciudad Blanca', famosa por su arquitectura en piedra sillar.", fact: "Su centro histórico es Patrimonio Cultural de la Humanidad." },
+            { word: "TRUJILLO", region: "Costa", cat: "Lugares", meaning: "La 'Ciudad de la Eterna Primavera' en la costa norte.", fact: "Cuna nacional de la Marinera y cercana a la ciudad de barro Chan Chan." },
+            { word: "AYACUCHO", region: "Sierra", cat: "Lugares", meaning: "La 'Ciudad de las 33 Iglesias', famosa por su Semana Santa.", fact: "Cuna de la artesanía de retablos y la Batalla de Ayacucho." },
+            { word: "PUNO", region: "Sierra", cat: "Lugares", meaning: "Conocida como la Capital Folclórica del Perú a orillas del Titicaca.", fact: "Posee más de 300 danzas originarias registradas." },
+            { word: "IQUITOS", region: "Selva", cat: "Lugares", meaning: "La metrópoli amazónica más grande a la que no se llega por carretera.", fact: "Ubicada a orillas del majestuoso río Amazonas." },
+            { word: "CAJAMARCA", region: "Sierra", cat: "Lugares", meaning: "Ciudad famosa por sus alegres carnavales y el Cuarto del Rescate.", fact: "Lugar del histórico encuentro entre Atahualpa y los conquistadores." },
+            { word: "HUANCAYO", region: "Sierra", cat: "Lugares", meaning: "Ciudad Incontrastable en el hermoso Valle del Mantaro.", fact: "Famosa por su feria dominical, su música y el baile del Huaylarsh." },
+            { word: "CHINCHA", region: "Costa", cat: "Lugares", meaning: "Cuna de la música y la cultura afroperuana en la región Ica.", fact: "Famosa por su gastronomía, carnavales y zapateo." },
+            { word: "AGUAYO", region: "Sierra", cat: "Artesanía", meaning: "Manta tradicional tejida usada para cargar niños o alimentos.", fact: "Destaca por sus llamativos colores geométricos e iconografía." },
+            { word: "CHICLAYO", region: "Costa", cat: "Lugares", meaning: "La 'Capital de la Amistad' en el departamento de Lambayeque.", "fact": "Famosa por la gastronomía norteña y los museos reales de Sipán." },
+            { word: "SIPAN", region: "Costa", cat: "Lugares", meaning: "El Señor de Sipán, antiguo gobernante de la cultura Mochica.", fact: "Su tumba fue hallada intacta en Huaca Rajada." },
+            { word: "KERO", region: "Sierra", cat: "Artesanía", meaning: "Vaso ceremonial de madera polícroma usado desde la época incaica.", fact: "Se utilizaba para realizar brindis rituales con chicha de jora." },
+            { word: "PACHACUTEC", region: "Sierra", cat: "Personaje", meaning: "El noveno Inca que transformó el imperio en el Gran Tahuantinsuyo.", fact: "Ordenó la construcción de la majestuosa ciudadela de Machu Picchu." },
+            { word: "SACSAYHUAMAN", region: "Sierra", cat: "Lugares", meaning: "Fortaleza ceremonial inca con gigantescos bloques de piedra.", fact: "Escenario principal de la fiesta anual del Inti Raymi." },
+            { word: "HUAYLARSH", region: "Sierra", cat: "Danza", meaning: "Danza festiva del Valle del Mantaro de poderoso zapateo.", fact: "Originada en las faenas agrícolas del cultivo de la papa." },
+            { word: "MARAS", region: "Sierra", cat: "Lugares", meaning: "Salineras compuestas por miles de posas de sal ancestrales.", fact: "Explotadas desde tiempos preincas en el Valle Sagrado." },
+            { word: "COLLCA", region: "Sierra", cat: "Costumbre", meaning: "Depósito de almacenamiento construido en laderas frías por los incas.", fact: "Conservaban cosechas para asegurar alimento a la población." },
+            { word: "CHASQUI", region: "Sierra", cat: "Personaje", meaning: "Corredor y mensajero inca que recorría los caminos imperiales.", fact: "Llevaba recados memorizados y quipus por todo el Tahuantinsuyo." },
+            { word: "QUIPU", region: "Sierra", cat: "Costumbre", meaning: "Sistema de cordones y nudos usado para contabilidad y registros.", fact: "Eran interpretados por expertos administradores llamados Quipucamayoc." },
+            { word: "QHAPAQNAN", region: "Nacional", cat: "Lugares", meaning: "La inmensa red de caminos incas que conectaba el imperio.", fact: "Tiene más de 30,000 kilómetros recorriendo 6 países sudamericanos." },
+            { word: "LLACTA", region: "Sierra", cat: "Lugares", meaning: "Poblado o centro administrativo urbano en la época prehispánica.", fact: "Diseñadas con cuidada armonía geográfica y arquitectónica." },
+            { word: "AYLLU", region: "Sierra", cat: "Costumbre", meaning: "Comunidad andina unida por lazos de parentesco y trabajo colectivo.", fact: "Célula base de la organización social del imperio incaico." },
+            { word: "MINKA", region: "Sierra", cat: "Costumbre", meaning: "Trabajo comunitario andino en favor del beneficio de todo el pueblo.", fact: "Tradición ancestral de cooperación que persiste hasta el día de hoy." },
+            { word: "AYNI", region: "Sierra", cat: "Costumbre", meaning: "Principio andino de reciprocidad: 'Hoy por ti, mañana por mí'.", fact: "Ayuda mutua entre familias para la siembra o construcción de casas." },
+            { word: "PAGO", region: "Sierra", cat: "Costumbre", meaning: "Ritual ceremonial de ofrenda de agradecimiento a la Pachamama.", fact: "Se realiza con hojas de coca, chicha y fetos de llama en agosto." },
+            { word: "APU", region: "Sierra", cat: "Costumbre", meaning: "Espíritu sagrado protector encarnado en las altas montañas.", fact: "Las comunidades andinas les rinden respeto y veneración." },
+            { word: "PACHAMAMA", region: "Nacional", cat: "Costumbre", meaning: "La Madre Tierra, deidad andina de la fertilidad y la vida.", fact: "En agosto se celebra su mes principal con tributos y oraciones." },
+            { word: "SANJUAN", region: "Selva", cat: "Fiesta", meaning: "La fiesta más grande de toda la Amazonía peruana cada 24 de junio.", fact: "Toda la población acude a los ríos para el 'baño purificador'." },
+            { word: "CHINCHERO", region: "Sierra", cat: "Lugares", meaning: "Pueblo cusqueño célebre por su arte textil tradicional y mercado.", fact: "Conserva técnicas incas intactas de teñido con insumos naturales." },
+            { word: "PALLA", region: "Sierra", cat: "Danza", meaning: "Danza de mujeres vestidas con vistosos trajes bordados e hilos de plata.", fact: "Celebrada con devoción en diversas provincias de Ancash y Lima." },
+            { word: "TAMBO", region: "Sierra", cat: "Lugares", meaning: "Albergue y almacén situado a lo largo de los caminos incas.", fact: "Daba hospedaje y alimento a los chasquis y comitivas reales." }
+        ];
+
+        // LOGROS Y CATEGORÍAS
+        const ACHIEVEMENTS = [
+            { id: "costa", name: "Guardián de la Costa", desc: "Adivina 3 palabras de la Costa", icon: "🌊" },
+            { id: "sierra", name: "Sabio Andino", desc: "Adivina 3 palabras de la Sierra", icon: "🏔️" },
+            { id: "selva", name: "Explorador Amazónico", desc: "Adivina 3 palabras de la Selva", icon: "🌿" },
+            { id: "streak5", name: "Racha Inca", desc: "Consigue una racha de 5 victorias", icon: "🔥" },
+            { id: "first_try", name: "Mano de Oro", desc: "Gana en el primer intento", icon: "👑" },
+            { id: "total10", name: "Gran Amauta", desc: "Adivina 10 palabras en total", icon: "📜" }
+        ];
+
+        // ESTADO DEL JUEGO
+        let state = {
+            mode: 1, // 1: Día, 2: Completa, 3: Pista
+            score: 0,
+            streak: 0,
+            record: 0,
+            sound: true,
+            currentWordObj: null,
+            targetWord: "",
+            attempts: [],
+            currentInput: "",
+            maxAttempts: 6,
+            gameOver: false,
+            stats: {
+                costa: 0, sierra: 0, selva: 0, totalWins: 0,
+                unlockedAchievements: []
+            }
+        };
+
+        // AUDIO SYNTHESIZER (Web Audio API - Cero librerías externas)
+        function playSound(type) {
+            if (!state.sound) return;
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+
+                const now = ctx.currentTime;
+
+                if (type === 'correct') {
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now);
+                    osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.1);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now); osc.stop(now + 0.2);
+                } else if (type === 'present') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(440, now);
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+                    osc.start(now); osc.stop(now + 0.15);
+                } else if (type === 'wrong') {
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(160, now);
+                    osc.frequency.exponentialRampToValueAtTime(90, now + 0.2);
+                    gain.gain.setValueAtTime(0.2, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                    osc.start(now); osc.stop(now + 0.2);
+                } else if (type === 'win') {
+                    [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+                        const noteOsc = ctx.createOscillator();
+                        const noteGain = ctx.createGain();
+                        noteOsc.connect(noteGain);
+                        noteGain.connect(ctx.destination);
+                        noteOsc.frequency.value = freq;
+                        noteGain.gain.setValueAtTime(0.15, now + idx * 0.08);
+                        noteGain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+                        noteOsc.start(now + idx * 0.08);
+                        noteOsc.stop(now + idx * 0.08 + 0.2);
+                    });
+                }
+            } catch(e) {}
+        }
+
+        // ELEMENTOS DOM
+        const boardEl = document.getElementById('board');
+        const keyboardEl = document.getElementById('keyboard');
+        const clueBoxEl = document.getElementById('clueBox');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalContent = document.getElementById('modalContent');
+
+        // CARGAR STORAGE
+        function loadStorage() {
+            const saved = localStorage.getItem('peru_game_data');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                state.score = parsed.score || 0;
+                state.streak = parsed.streak || 0;
+                state.record = parsed.record || 0;
+                state.stats = parsed.stats || state.stats;
+            }
+            updateStatsUI();
+        }
+
+        function saveStorage() {
+            localStorage.setItem('peru_game_data', JSON.stringify({
+                score: state.score,
+                streak: state.streak,
+                record: state.record,
+                stats: state.stats
+            }));
+        }
+
+        function updateStatsUI() {
+            document.getElementById('scoreVal').textContent = state.score;
+            document.getElementById('streakVal').textContent = `${state.streak} 🔥`;
+            document.getElementById('recordVal').textContent = state.record;
+        }
+
+        // OBTENER PALABRA
+        function getDailyWord() {
+            const now = new Date();
+            const start = new Date(now.getFullYear(), 0, 0);
+            const diff = now - start;
+            const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+            return WORD_BANK[dayOfYear % WORD_BANK.length];
+        }
+
+        function getRandomWord() {
+            return WORD_BANK[Math.floor(Math.random() * WORD_BANK.length)];
+        }
+
+        // INICIALIZAR MODO
+        function initGame(mode) {
+            state.mode = mode;
+            state.attempts = [];
+            state.currentInput = "";
+            state.gameOver = false;
+            resetKeyboardColors();
+
+            if (mode === 1) {
+                state.currentWordObj = getDailyWord();
+                state.maxAttempts = 6;
+                clueBoxEl.textContent = `📅 Adivina la Tradición del Día (${state.currentWordObj.word.length} letras)`;
+            } else if (mode === 2) {
+                state.currentWordObj = getRandomWord();
+                state.maxAttempts = 4;
+                clueBoxEl.textContent = `💡 Pista: "${state.currentWordObj.meaning}"`;
+            } else if (mode === 3) {
+                state.currentWordObj = getRandomWord();
+                state.maxAttempts = 6;
+                clueBoxEl.textContent = `🔍 [${state.currentWordObj.cat.toUpperCase()}] ${state.currentWordObj.meaning}`;
+            }
+
+            state.targetWord = state.currentWordObj.word.toUpperCase();
+
+            if (mode === 2) {
+                // Generar intento automático con huecos
+                let fillMask = "";
+                for (let i = 0; i < state.targetWord.length; i++) {
+                    fillMask += (i % 2 === 0) ? state.targetWord[i] : "_";
+                }
+                state.currentInput = fillMask;
+            }
+
+            renderBoard();
+        }
+
+        // RENDERIZAR TABLERO
+        function renderBoard() {
+            boardEl.innerHTML = "";
+            const wordLen = state.targetWord.length;
+
+            if (state.mode === 1) {
+                for (let r = 0; r < state.maxAttempts; r++) {
+                    const rowEl = document.createElement('div');
+                    rowEl.className = 'row';
+                    const isCurrent = (r === state.attempts.length);
+                    const attemptWord = state.attempts[r] || (isCurrent ? state.currentInput : "");
+
+                    for (let c = 0; c < wordLen; c++) {
+                        const tile = document.createElement('div');
+                        tile.className = 'tile';
+                        const letter = attemptWord[c] || "";
+                        tile.textContent = letter;
+
+                        if (letter && isCurrent && !state.gameOver) tile.classList.add('pop');
+
+                        if (r < state.attempts.length) {
+                            tile.classList.add('flip');
+                            const res = getLetterStatus(attemptWord, c);
+                            tile.classList.add(res);
+                        }
+                        rowEl.appendChild(tile);
+                    }
+                    boardEl.appendChild(rowEl);
+                }
+            } else if (state.mode === 2 || state.mode === 3) {
+                // Fila única interactiva
+                const rowEl = document.createElement('div');
+                rowEl.className = 'row';
+
+                for (let c = 0; c < wordLen; c++) {
+                    const tile = document.createElement('div');
+                    tile.className = 'tile';
+                    const letter = state.currentInput[c] || "";
+                    tile.textContent = (letter === "_") ? "" : letter;
+
+                    if (state.gameOver && state.currentInput === state.targetWord) {
+                        tile.classList.add('correct');
+                    }
+                    rowEl.appendChild(tile);
+                }
+                boardEl.appendChild(rowEl);
+            }
+        }
+
+        // EVALUAR LETRAS PARA WORDLE
+        function getLetterStatus(guess, index) {
+            const letter = guess[index];
+            const target = state.targetWord;
+
+            if (target[index] === letter) return 'correct';
+
+            let targetCount = 0, guessCount = 0;
+            for (let i = 0; i < target.length; i++) {
+                if (target[i] === letter) targetCount++;
+                if (guess[i] === letter && target[i] === letter) targetCount--;
+            }
+
+            for (let i = 0; i <= index; i++) {
+                if (guess[i] === letter && target[i] !== letter) guessCount++;
+            }
+
+            return (guessCount <= targetCount && targetCount > 0) ? 'present' : 'absent';
+        }
+
+        // TECLADO Y ENTRADAS
+        function handleKeyPress(key) {
+            if (state.gameOver) return;
+
+            const wordLen = state.targetWord.length;
+
+            if (key === 'BACKSPACE') {
+                if (state.mode === 1) {
+                    state.currentInput = state.currentInput.slice(0, -1);
+                } else if (state.mode === 2 || state.mode === 3) {
+                    // Borrar última letra ingresada
+                    let arr = state.currentInput.split("");
+                    for (let i = arr.length - 1; i >= 0; i--) {
+                        if (arr[i] !== "_" && (state.mode === 3 || i % 2 !== 0)) {
+                            arr[i] = "_";
+                            break;
+                        }
+                    }
+                    state.currentInput = arr.join("");
+                }
+                renderBoard();
+                return;
+            }
+
+            if (key === 'ENTER') {
+                if (state.mode === 1) {
+                    if (state.currentInput.length < wordLen) {
+                        shakeCurrentRow();
+                        playSound('wrong');
+                        return;
+                    }
+                    submitGuess(state.currentInput);
+                } else if (state.mode === 2 || state.mode === 3) {
+                    if (state.currentInput.includes("_")) {
+                        shakeCurrentRow();
+                        playSound('wrong');
+                        return;
+                    }
+                    if (state.currentInput === state.targetWord) {
+                        handleWin();
+                    } else {
+                        shakeCurrentRow();
+                        playSound('wrong');
+                    }
+                }
+                return;
+            }
+
+            if (/^[A-ZÑ]$/.test(key)) {
+                if (state.mode === 1) {
+                    if (state.currentInput.length < wordLen) {
+                        state.currentInput += key;
+                    }
+                } else if (state.mode === 2) {
+                    let arr = state.currentInput.split("");
+                    for (let i = 0; i < arr.length; i++) {
+                        if (arr[i] === "_" && i % 2 !== 0) {
+                            arr[i] = key;
+                            break;
+                        }
+                    }
+                    state.currentInput = arr.join("");
+                } else if (state.mode === 3) {
+                    let arr = state.currentInput.split("");
+                    for (let i = 0; i < arr.length; i++) {
+                        if (arr[i] === "_") {
+                            arr[i] = key;
+                            break;
+                        }
+                    }
+                    state.currentInput = arr.join("");
+                }
+                renderBoard();
+            }
+        }
+
+        function submitGuess(guess) {
+            state.attempts.push(guess);
+            updateKeyboardColors(guess);
+
+            if (guess === state.targetWord) {
+                renderBoard();
+                setTimeout(handleWin, 600);
+            } else {
+                if (state.attempts.length >= state.maxAttempts) {
+                    renderBoard();
+                    setTimeout(handleLoss, 600);
+                } else {
+                    playSound('wrong');
+                    state.currentInput = "";
+                    renderBoard();
+                }
+            }
+        }
+
+        function updateKeyboardColors(guess) {
+            for (let i = 0; i < guess.length; i++) {
+                const letter = guess[i];
+                const status = getLetterStatus(guess, i);
+                const keyEl = document.querySelector(`.key[data-key="${letter}"]`);
+                if (keyEl) {
+                    if (status === 'correct') {
+                        keyEl.className = 'key correct';
+                        playSound('correct');
+                    } else if (status === 'present' && !keyEl.classList.contains('correct')) {
+                        keyEl.className = 'key present';
+                        playSound('present');
+                    } else if (!keyEl.classList.contains('correct') && !keyEl.classList.contains('present')) {
+                        keyEl.className = 'key absent';
+                    }
+                }
+            }
+        }
+
+        function resetKeyboardColors() {
+            document.querySelectorAll('.key').forEach(k => {
+                k.className = k.classList.contains('wide') ? 'key wide' : 'key';
+            });
+        }
+
+        function shakeCurrentRow() {
+            const rows = boardEl.querySelectorAll('.row');
+            const currentRow = rows[state.mode === 1 ? state.attempts.length : 0];
+            if (currentRow) {
+                currentRow.classList.add('shake');
+                setTimeout(() => currentRow.classList.remove('shake'), 500);
+            }
+        }
+
+        // MANEJO DE VICTORIA Y DERROTA
+        function handleWin() {
+            state.gameOver = true;
+            playSound('win');
+
+            // Cálculo de Puntos: 100 - (intentos-1)*10
+            const attemptsCount = state.mode === 1 ? state.attempts.length : 1;
+            const ptsGained = Math.max(10, 100 - (attemptsCount - 1) * 10);
+
+            state.score += ptsGained;
+            state.streak++;
+            if (state.score > state.record) state.record = state.score;
+
+            // Actualizar Estadísticas
+            state.stats.totalWins++;
+            if (state.currentWordObj.region.includes("Costa")) state.stats.costa++;
+            if (state.currentWordObj.region.includes("Sierra")) state.stats.sierra++;
+            if (state.currentWordObj.region.includes("Selva")) state.stats.selva++;
+
+            checkAchievements(attemptsCount);
+            saveStorage();
+            updateStatsUI();
+
+            showVictoryModal(ptsGained);
+        }
+
+        function handleLoss() {
+            state.gameOver = true;
+            playSound('wrong');
+            state.streak = 0;
+            saveStorage();
+            updateStatsUI();
+
+            showModal(`
+                <h2>¡Casi lo logras! 🇵🇪</h2>
+                <p>La palabra era: <strong>${state.targetWord}</strong></p>
+                <div class="card-info">
+                    <p><strong>Región:</strong> ${state.currentWordObj.region}</p>
+                    <p><strong>Significado:</strong> ${state.currentWordObj.meaning}</p>
+                </div>
+                <button class="modal-btn" onclick="closeModal(); initGame(${state.mode});">Reintentar</button>
+            `);
+        }
+
+        function checkAchievements(attempts) {
+            let unlocked = state.stats.unlockedAchievements;
+            if (state.stats.costa >= 3 && !unlocked.includes("costa")) unlocked.push("costa");
+            if (state.stats.sierra >= 3 && !unlocked.includes("sierra")) unlocked.push("sierra");
+            if (state.stats.selva >= 3 && !unlocked.includes("selva")) unlocked.push("selva");
+            if (state.streak >= 5 && !unlocked.includes("streak5")) unlocked.push("streak5");
+            if (attempts === 1 && !unlocked.includes("first_try")) unlocked.push("first_try");
+            if (state.stats.totalWins >= 10 && !unlocked.includes("total10")) unlocked.push("total10");
+        }
+
+        // MODALES
+        function showVictoryModal(pts) {
+            showModal(`
+                <h2>¡Excelente Acierto! 🎉</h2>
+                <p>+${pts} Puntos ganados</p>
+                <div class="card-info">
+                    <p><strong>Palabra:</strong> ${state.targetWord}</p>
+                    <p><strong>Categoría:</strong> ${state.currentWordObj.cat}</p>
+                    <p><strong>Región:</strong> ${state.currentWordObj.region}</p>
+                    <p><strong>Significado:</strong> ${state.currentWordObj.meaning}</p>
+                    <br>
+                    <p><strong>💡 Dato Curioso:</strong> ${state.currentWordObj.fact}</p>
+                </div>
+                <button class="modal-btn" onclick="closeModal(); initGame(${state.mode});">Siguiente Palabra</button>
+            `);
+        }
+
+        function showModal(html) {
+            modalContent.innerHTML = html;
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+        }
+
+        function showFactModal() {
+            const randomObj = getRandomWord();
+            showModal(`
+                <h2>💡 Sabiduría Peruana</h2>
+                <div class="card-info">
+                    <p><strong>Tradición:</strong> ${randomObj.word}</p>
+                    <p><strong>Región:</strong> ${randomObj.region}</p>
+                    <p><strong>Dato Cultural:</strong> ${randomObj.fact}</p>
+                </div>
+                <button class="modal-btn" onclick="closeModal()">¡Entendido!</button>
+            `);
+        }
+
+        function showStatsModal() {
+            let achievementsHTML = ACHIEVEMENTS.map(a => {
+                const isUnlocked = state.stats.unlockedAchievements.includes(a.id);
+                return `
+                    <div class="achievement-card ${isUnlocked ? 'unlocked' : ''}">
+                        <div class="achievement-icon">${a.icon}</div>
+                        <div>
+                            <div class="achievement-title">${a.name} ${isUnlocked ? '✅' : ''}</div>
+                            <div class="achievement-desc">${a.desc}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            showModal(`
+                <h2>🏆 Logros y Estadísticas</h2>
+                <p style="font-size:0.85rem; color:#666;">Victorias totales: <strong>${state.stats.totalWins}</strong></p>
+                <div class="achievements-grid">
+                    ${achievementsHTML}
+                </div>
+                <button class="modal-btn" onclick="closeModal()">Cerrar</button>
+            `);
+        }
+
+        // LISTENERS DE EVENTOS
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                e.target.classList.add('active');
+                const mode = parseInt(e.target.getAttribute('data-mode'));
+                initGame(mode);
+            });
+        });
+
+        keyboardEl.addEventListener('click', (e) => {
+            if (e.target.classList.contains('key')) {
+                const key = e.target.getAttribute('data-key');
+                handleKeyPress(key);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (modalOverlay.classList.contains('active')) return;
+            const key = e.key.toUpperCase();
+            if (key === 'ENTER') handleKeyPress('ENTER');
+            else if (key === 'BACKSPACE') handleKeyPress('BACKSPACE');
+            else if (/^[A-ZÑ]$/.test(key)) handleKeyPress(key);
+        });
+
+        document.getElementById('btnFact').addEventListener('click', showFactModal);
+        document.getElementById('btnStats').addEventListener('click', showStatsModal);
+        document.getElementById('btnSound').addEventListener('click', () => {
+            state.sound = !state.sound;
+            document.getElementById('btnSound').textContent = state.sound ? "🔊" : "🔇";
+        });
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // INICIALIZACIÓN DE INICIO
+        loadStorage();
+        initGame(1);
+    </script>
+</body>
+</html>
